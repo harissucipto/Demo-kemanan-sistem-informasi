@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Transaksi - Aman</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <script src="vue.js"></script>
+
+    <div id="app">
+        <h1>Transaksi Penjual</h1>
+
+        <div v-if="!login">
+            <h2>lOGIN Sistem Transaksi</h2>
+            <p>username: <input v-model="penjual"></p>
+            <p>password: <input type="password"></p>
+            <button @click="onLogin">Login</button>
+        </div>
+
+        <div v-if="boxPesan.length">
+             <legend><h1>Status Transaksi</h1></legend>
+            <table  border="2px">
+                <tr>
+                    <td>Nomor</td>
+                    <td>Kode Transaksi</td>
+                    <td>Harga</td>
+                    <td>Status Kirim Barang</td>
+                    <td>Pengguna Telah Membayar</td>
+                    <td>Status</td>
+                </tr>
+                <tr v-for="(item, i) in boxPesan">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item.kode }}</td>
+                    <td>{{ item.harga }}</td>
+                    <td>
+                        <p v-if="item.penjual">Barang Sudah Dikirim</p>
+                        <div v-else>
+                            <button  @click="konfirmasiPengiriman(i)" v-if="item.pengirim">
+                                    Kirim Barang
+                            </button>
+                            <p v-else>
+                                Pembeli Harus Membayar dahulu
+                            </p>
+
+                        </div>
+                    </td>
+                    <td>{{  cekPembeli(item.pengirim) }}</td>
+                    <td>{{ cekStatus(item.penjual && item.pengirim) }}</td>
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="app.js"></script>
+</body>
+</html>
